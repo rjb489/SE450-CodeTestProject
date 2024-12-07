@@ -47,6 +47,14 @@ Node* findMin(Node* root) {
     return root;
 }
 
+// Find the maximum value node in a subtree
+Node* findMax(Node* root) {
+    while (root && root->right) {
+        root = root->right;
+    }
+    return root;
+}
+
 // Delete a node by key
 Node* deleteNode(Node* root, int key) {
     if (!root) return NULL;

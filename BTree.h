@@ -1,5 +1,5 @@
-#ifndef BINARY_TREE_H
-#define BINARY_TREE_H
+#ifndef B_TREE_H
+#define B_TREE_H
 
 #include <stdbool.h>
 
@@ -28,4 +28,4 @@ void postOrderTraversal(Node* root);
 
 void printTree(Node* root, int space);
 
-#endif // BINARY_TREE_H
+#endif // B_TREE_H

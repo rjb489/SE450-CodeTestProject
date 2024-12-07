@@ -18,6 +18,8 @@ int* search(Node* root, int key);
 Node* deleteNode(Node* root, int key);
 void destroyTree(Node* root);
 
+Node* findMax(Node* root);
+
 int getHeight(Node* root);
 int countNodes(Node* root);
 bool isBalanced(Node* root);

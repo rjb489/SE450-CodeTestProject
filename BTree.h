@@ -19,6 +19,7 @@ Node* deleteNode(Node* root, int key);
 void destroyTree(Node* root);
 
 Node* findMax(Node* root);
+Node* findMin(Node* root);
 
 int getHeight(Node* root);
 int countNodes(Node* root);

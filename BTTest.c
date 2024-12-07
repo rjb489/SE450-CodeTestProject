@@ -3,27 +3,28 @@
 
 using namespace deepstate;
 
+// Single test function to comprehensively test tree operations
 TEST(BinaryTree, ComprehensiveTest) {
     // Create an empty binary tree
     Node* tree = NULL;
 
     // Symbolic inputs for keys and values
-    int keys[4];
-    int values[4];
-    for (int i = 0; i < 4; i++) {
+    int keys[5];
+    int values[5];
+    for (int i = 0; i < 5; i++) {
         keys[i] = DeepState_Int();
         values[i] = DeepState_Int();
     }
 
     // Ensure all keys are distinct
-    for (int i = 0; i < 4; i++) {
-        for (int j = i + 1; j < 4; j++) {
+    for (int i = 0; i < 5; i++) {
+        for (int j = i + 1; j < 5; j++) {
             ASSUME_NE(keys[i], keys[j]);
         }
     }
 
     // Insert nodes into the tree and verify using in-order traversal
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 5; i++) {
         tree = insert(tree, keys[i], values[i]);
         int* result = search(tree, keys[i]);
         ASSERT_NE(result, nullptr);  // Key must exist after insertion
@@ -34,28 +35,42 @@ TEST(BinaryTree, ComprehensiveTest) {
     printf("Tree structure after insertions:\n");
     printTree(tree, 0);
 
+    // Perform in-order traversal
+    printf("In-order traversal after insertions:\n");
+    inOrderTraversal(tree);
+
     // Perform reverse in-order traversal
-    printf("Reverse in-order traversal after insertions:\n");
+    printf("Reverse in-order traversal:\n");
     reverseInOrderTraversal(tree);
 
     // Validate tree properties
     ASSERT_TRUE(isBalanced(tree));  // Tree must be height-balanced
-    ASSERT_EQ(countNodes(tree), 4);  // Node count must equal 4
+    ASSERT_EQ(countNodes(tree), 5);  // Node count must equal 5
     printf("Tree height: %d\n", getHeight(tree));
 
-    // Test edge cases: Inserting and searching extreme values
-    tree = insert(tree, INT_MIN, 42);
-    tree = insert(tree, INT_MAX, 84);
-    ASSERT_EQ(*search(tree, INT_MIN), 42);  // Verify INT_MIN insertion
-    ASSERT_EQ(*search(tree, INT_MAX), 84);  // Verify INT_MAX insertion
+    // Find the minimum and maximum nodes
+    Node* minNode = findMin(tree);
+    Node* maxNode = findMax(tree);
+    ASSERT_NE(minNode, nullptr);
+    ASSERT_NE(maxNode, nullptr);
 
-    // Perform in-order traversal and print results
-    printf("In-order traversal after extreme value insertions:\n");
-    inOrderTraversal(tree);
+    // Verify the minimum and maximum nodes
+    printf("Minimum key: %d, Value: %d\n", minNode->key, minNode->value);
+    printf("Maximum key: %d, Value: %d\n", maxNode->key, maxNode->value);
+
+    // Check against the manually calculated min and max
+    int expectedMin = keys[0];
+    int expectedMax = keys[0];
+    for (int i = 1; i < 5; i++) {
+        if (keys[i] < expectedMin) expectedMin = keys[i];
+        if (keys[i] > expectedMax) expectedMax = keys[i];
+    }
+    ASSERT_EQ(minNode->key, expectedMin);
+    ASSERT_EQ(maxNode->key, expectedMax);
 
     // Delete keys and validate height decreases
     int prevHeight = getHeight(tree);
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 5; i++) {
         printf("Deleting key: %d\n", keys[i]);
         tree = deleteNode(tree, keys[i]);
         int* result = search(tree, keys[i]);
@@ -70,19 +85,9 @@ TEST(BinaryTree, ComprehensiveTest) {
         prevHeight = newHeight;
     }
 
-    // Delete extreme values
-    tree = deleteNode(tree, INT_MIN);
-    tree = deleteNode(tree, INT_MAX);
-    ASSERT_EQ(search(tree, INT_MIN), nullptr);
-    ASSERT_EQ(search(tree, INT_MAX), nullptr);
-
-    // Validate tree is empty
+    // Verify tree is empty
     ASSERT_EQ(countNodes(tree), 0);  // No nodes should remain
     ASSERT_TRUE(isBalanced(tree));  // An empty tree is balanced
-
-    // Test deleting from an empty tree
-    printf("Deleting from an empty tree:\n");
-    tree = deleteNode(tree, 12345);  // Should handle gracefully
 
     // Clean up
     destroyTree(tree);

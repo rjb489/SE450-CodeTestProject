@@ -23,6 +23,7 @@ int countNodes(Node* root);
 bool isBalanced(Node* root);
 
 void inOrderTraversal(Node* root);
+void reverseInOrderTraversal(Node* root);
 void preOrderTraversal(Node* root);
 void postOrderTraversal(Node* root);
 

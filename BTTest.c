@@ -1,5 +1,5 @@
 #include <deepstate/DeepState.hpp>
-#include "BinaryTree.h"
+#include "BTree.h"
 
 using namespace deepstate;
 

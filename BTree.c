@@ -88,10 +88,59 @@ void destroyTree(Node* root) {
     free(root);
 }
 
-// Print the tree (in-order traversal)
-void printTree(Node* root) {
+// Calculate the height of the tree
+int getHeight(Node* root) {
+    if (!root) return 0;
+    int leftHeight = getHeight(root->left);
+    int rightHeight = getHeight(root->right);
+    return 1 + (leftHeight > rightHeight ? leftHeight : rightHeight);
+}
+
+// Count the total number of nodes in the tree
+int countNodes(Node* root) {
+    if (!root) return 0;
+    return 1 + countNodes(root->left) + countNodes(root->right);
+}
+
+// Check if the tree is height-balanced
+bool isBalanced(Node* root) {
+    if (!root) return true;
+    int leftHeight = getHeight(root->left);
+    int rightHeight = getHeight(root->right);
+    if (abs(leftHeight - rightHeight) > 1) return false;
+    return isBalanced(root->left) && isBalanced(root->right);
+}
+
+// Traversal functions
+void inOrderTraversal(Node* root) {
     if (!root) return;
-    printTree(root->left);
+    inOrderTraversal(root->left);
     printf("Key: %d, Value: %d\n", root->key, root->value);
-    printTree(root->right);
+    inOrderTraversal(root->right);
+}
+
+void preOrderTraversal(Node* root) {
+    if (!root) return;
+    printf("Key: %d, Value: %d\n", root->key, root->value);
+    preOrderTraversal(root->left);
+    preOrderTraversal(root->right);
+}
+
+void postOrderTraversal(Node* root) {
+    if (!root) return;
+    postOrderTraversal(root->left);
+    postOrderTraversal(root->right);
+    printf("Key: %d, Value: %d\n", root->key, root->value);
+}
+
+// Print the tree structure
+void printTree(Node* root, int space) {
+    if (!root) return;
+    space += 5;
+    printTree(root->right, space);
+    for (int i = 5; i < space; i++) {
+        printf(" ");
+    }
+    printf("%d\n", root->key);
+    printTree(root->left, space);
 }

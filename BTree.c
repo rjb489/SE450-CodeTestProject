@@ -111,6 +111,14 @@ void inOrderTraversal(Node* root) {
     inOrderTraversal(root->right);
 }
 
+// Reverse in-order traversal (new feature)
+void reverseInOrderTraversal(Node* root) {
+    if (!root) return;
+    reverseInOrderTraversal(root->right);
+    printf("Key: %d, Value: %d\n", root->key, root->value);
+    reverseInOrderTraversal(root->left);
+}
+
 void preOrderTraversal(Node* root) {
     if (!root) return;
     printf("Key: %d, Value: %d\n", root->key, root->value);

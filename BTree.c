@@ -2,14 +2,6 @@
 #include <stdlib.h>
 #include "BTree.h"
 
-// Define a structure for a binary tree node
-typedef struct Node {
-    int key;
-    int value;
-    struct Node* left;
-    struct Node* right;
-} Node;
-
 // Create a new node
 Node* createNode(int key, int value) {
     Node* newNode = (Node*)malloc(sizeof(Node));

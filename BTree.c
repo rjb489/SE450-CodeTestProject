@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
+#include "BTree.h"
 
 // Define a structure for a binary tree node
 typedef struct Node {

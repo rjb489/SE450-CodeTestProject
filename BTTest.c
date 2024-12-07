@@ -30,20 +30,31 @@ TEST(BinaryTree, ComprehensiveTest) {
         ASSERT_EQ(*result, values[i]);  // Value must match inserted value
     }
 
-    // Print the tree structure (rotated)
+    // Print the tree structure after insertions
     printf("Tree structure after insertions:\n");
     printTree(tree, 0);
+
+    // Perform reverse in-order traversal
+    printf("Reverse in-order traversal after insertions:\n");
+    reverseInOrderTraversal(tree);
 
     // Validate tree properties
     ASSERT_TRUE(isBalanced(tree));  // Tree must be height-balanced
     ASSERT_EQ(countNodes(tree), 4);  // Node count must equal 4
     printf("Tree height: %d\n", getHeight(tree));
 
-    // Perform in-order traversal and print the results
-    printf("In-order traversal after insertions:\n");
+    // Test edge cases: Inserting and searching extreme values
+    tree = insert(tree, INT_MIN, 42);
+    tree = insert(tree, INT_MAX, 84);
+    ASSERT_EQ(*search(tree, INT_MIN), 42);  // Verify INT_MIN insertion
+    ASSERT_EQ(*search(tree, INT_MAX), 84);  // Verify INT_MAX insertion
+
+    // Perform in-order traversal and print results
+    printf("In-order traversal after extreme value insertions:\n");
     inOrderTraversal(tree);
 
-    // Delete keys and verify the tree structure after each deletion
+    // Delete keys and validate height decreases
+    int prevHeight = getHeight(tree);
     for (int i = 0; i < 4; i++) {
         printf("Deleting key: %d\n", keys[i]);
         tree = deleteNode(tree, keys[i]);
@@ -52,11 +63,26 @@ TEST(BinaryTree, ComprehensiveTest) {
 
         printf("Tree structure after deletion of key %d:\n", keys[i]);
         printTree(tree, 0);
+
+        // Check height decreases or remains the same
+        int newHeight = getHeight(tree);
+        ASSERT_LE(newHeight, prevHeight);
+        prevHeight = newHeight;
     }
 
-    // Verify that the tree is empty
+    // Delete extreme values
+    tree = deleteNode(tree, INT_MIN);
+    tree = deleteNode(tree, INT_MAX);
+    ASSERT_EQ(search(tree, INT_MIN), nullptr);
+    ASSERT_EQ(search(tree, INT_MAX), nullptr);
+
+    // Validate tree is empty
     ASSERT_EQ(countNodes(tree), 0);  // No nodes should remain
     ASSERT_TRUE(isBalanced(tree));  // An empty tree is balanced
+
+    // Test deleting from an empty tree
+    printf("Deleting from an empty tree:\n");
+    tree = deleteNode(tree, 12345);  // Should handle gracefully
 
     // Clean up
     destroyTree(tree);
